@@ -1,10 +1,13 @@
 /**
  * TODO (132): Fill out an appropriate assignment comment block
+ * 
+ *  Name - Vaughan
+ *  Teacher - Mr.Hardman
+ *  Course - PTEC
+ *  Date Last Edited - 11/30/2018
  */
 
-
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
 
 /**
  * Write a description of class MyWorld here.
@@ -14,18 +17,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class PlayField extends World
 {
-    //TODO (1): Declare a boolean instance variable called startGame that is initialized to false
-    
-    
-    //TODO (2): Declare a Ball instance variable called theBall
-    
-    
-    //TODO (3): Declare a Score instance variable called player1Score
-    
-    
+    // A boolean instance variable called startGame that is set to false
+    private boolean startGame = false;
+
+    // An instance of the Ball class called theBall
+    private Ball theBall;
+
+    // A Score  variable called player1Score
+    private Score player1Score;
+
     //TODO (4): Declare a Score instance variable called player2Score
-    
-    
+    private Score player2Score;
+
     /**
      * TODO (5): Declare a default constructor for PlayField
      *  
@@ -34,8 +37,13 @@ public class PlayField extends World
      *           
      * TODO (15): Make a method call to the initializePlayingField method
      */
-    
-    
+    PlayField()
+    {
+        super(800,600,1);
+        initializePlayingField();
+
+    }
+
     /**
      * TODO (7): Declare a method called initializePlayingField that
      *           does not return anything and has no parameters
@@ -52,14 +60,22 @@ public class PlayField extends World
      * 
      * TODO (12): Show text stating that the player should "press the space bar to begin play" at an x location of 200 and a y location of 550
      */
-    
-    
+    private void initializePlayingField()
+    {
+        getBackground().setColor(Color.BLACK);
+        getBackground().fillRect(0,0,getWidth(),getHeight());
+        getBackground().setColor(Color.GRAY);
+        getBackground().fillRect(getWidth()/2,0,4,getHeight());
+        
+        addPlayersAndObjects();
+        showText("Press Space Bar To Play",200,550);
+    }
+
     /**
      * TODO (13): Declare a method called addPlayersAndObjects that
      *           does not return anything and has no parameters
      *
-     * TODO (54): Initialize the theBall variable to a new Ball object
-     * 
+     * TODO (54): Initialize the theBall variable to a new Ball objectsssssss     * 
      * TODO (40): Initialize the player1Score variable to a new Score object with an appropriate parameter value
      * 
      * TODO (41): Initialize the player2Score variable to a new Score object with an appropriate parameter value
@@ -74,8 +90,19 @@ public class PlayField extends World
      * 
      * TODO (43): Add the player2Score object at an x location of 200 pixels less than the width of the world and a y location of 50
      */
-    
-    
+
+    private void addPlayersAndObjects()
+    {
+        theBall = new Ball();
+        player1Score = new Score(true);
+        player2Score = new Score(false);
+        addObject(theBall,getWidth()/2,getHeight()/2);
+        addObject(new Paddle(true),10,getHeight());
+        addObject(new Paddle(false),getWidth()-10,getHeight());
+        addObject(player1Score,200,50);
+        addObject(player2Score,getWidth()-200,50);
+    }
+
     /**
      * TODO (61): Declare the act method for the PlayField class
      * 
@@ -87,8 +114,18 @@ public class PlayField extends World
      * 
      *      TODO (81): Use a method to check if a player has won
      */
-    
-    
+    public void act()
+    {
+        if(startGame == false)
+        {
+            checkKeyPress();                    
+        }
+        else
+        {
+            checkWin();
+        }
+    }
+
     /**
      * TODO (56): Declare a method called checkKeyPress that does not
      *          return anything and has no parameters
@@ -101,7 +138,16 @@ public class PlayField extends World
      *      
      *      TODO (60): Set the velocity of theBall to be 5 pixels
      */
-    
+    public void checkKeyPress()
+    {
+        if(Greenfoot.isKeyDown("space"))
+        {
+            startGame = true;
+            showText("",205,50);
+            theBall.setVelocity(5);
+        }
+    }
+
     /**
      * TODO (64): Declare a public method called reset that does not return
      *            anything and has no parameters
@@ -116,7 +162,15 @@ public class PlayField extends World
      * 
      * TODO (69): Set the startGame variable to false
      */
-    
+    public void reset()
+    {
+        theBall = new Ball();
+        addObject(theBall,getWidth()/2,getHeight()/2);
+        theBall.setVelocity(0);
+        showText("Press Space To Start",200,550);
+        startGame = false;
+    }
+
     /**
      * TODO (70): Declare a method called checkWin that does not
      *            return anything and has no parameters
@@ -145,13 +199,37 @@ public class PlayField extends World
      *      
      *      TODO (79): In both conditional statements, draw an image on the background that will show which player won in the exact center of the world (you should have GreenfootImage variables for this)
      */
-    
-    
+    public void checkWin()
+    {
+        GreenfootImage player1Win = new GreenfootImage("Player One Wins!",45,Color.BLUE,Color.BLACK);
+        GreenfootImage player2Win = new GreenfootImage("Player Two Wins!",45,Color.RED,Color.BLACK);
+
+        int player1Total = player1Score.getScore();
+        int player2Total = player2Score.getScore();
+        if(player1Total == 7)
+        {
+            removeObjects(getObjects(null));                                  
+            getBackground().setColor(Color.BLACK);
+            getBackground().drawRect(0,0,getWidth(),getHeight());
+            getBackground().drawImage(player1Win,getWidth()/2,getHeight()/2);
+        }
+        else if(player2Total == 7)
+        {
+            removeObjects(getObjects(null));
+            getBackground().setColor(Color.BLACK);
+            getBackground().drawRect(0,0,getWidth(),getHeight());
+            getBackground().drawImage(player2Win,getWidth()/2,getHeight()/2);
+        }
+    }
+
     /**
      * TODO (16): Declare a public method called getStarted that returns
      *            a boolean and has no parameters
      *          
      * TODO (17): Inside the method, return the variable that states whether the game has started or not
      */
-    
+    public boolean getStarted()
+    {
+        return startGame;
+    }
 }

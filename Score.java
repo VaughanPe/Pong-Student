@@ -1,6 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-
 /**
  * Write a description of class Score here.
  * 
@@ -10,13 +9,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Score extends Actor
 {
     //TODO (18): Declare an integer instance variable called playerScore
-    
-    
+    public int playerScore;
+
     //TODO (19): Declare a boolean instance variable called isLeft
-    
-    
+    boolean isLeft;
+
     //TODO (20): Declare a boolean instance variable called scoreChanged
-    
+    boolean scoreChanged;
 
     /**
      * TODO (21): Declare a constructor for Score that has a boolean
@@ -28,7 +27,12 @@ public class Score extends Actor
      * 
      * TODO (32): Make a method call to displayScore
      */
-    
+    Score(boolean onLeft)
+    {
+        playerScore = 0;
+        isLeft = onLeft;
+        displayScore();
+    }
 
     /**
      * Act - do whatever the Score wants to do. This method is called whenever
@@ -38,9 +42,11 @@ public class Score extends Actor
     {
         // Add your action code here.
         //TODO (33): If the score has changed...
-        
+        if(playerScore >= 0)
+        {
             //TODO (34): Display the score
-            
+            displayScore();
+        }
     }    
 
     /**
@@ -69,7 +75,19 @@ public class Score extends Actor
      * 
      * TODO (31): The score is now updated and the display will not need to be changed. Change the value for the variable that stores this info
      */
-    
+    public void displayScore()
+    {
+        GreenfootImage display;
+        if(isLeft == true)
+        {
+            display = new GreenfootImage((Integer.toString(playerScore)),30,Color.BLUE,Color.BLACK);
+        }
+        else
+        {
+             display = new GreenfootImage((Integer.toString(playerScore)),30,Color.RED,Color.BLACK);
+        }
+        setImage(display);
+    }
 
     /**
      * TODO (35): Declare a public method called countScore that does not
@@ -79,7 +97,11 @@ public class Score extends Actor
      * 
      * TODO (37): The score has now changed. Change the variable that stores this info
      */
-    
+    public void countScore()
+    {
+        playerScore = playerScore+1;
+        
+    }
 
     /**
      * TODO (38): Declare a public method called getScore that returns
@@ -87,5 +109,8 @@ public class Score extends Actor
      *          
      * TODO (39): Inside the method, return the score for the scoreboard
      */
-    
+    public int getScore()
+    {
+        return(playerScore);
+    }
 }

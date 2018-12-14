@@ -10,16 +10,16 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Paddle extends Actor
 {
     //TODO (108): Declare an integer instance constant called WIDTH that is initialized to 10
-    
+    private final int WIDTH = 10;
     
     //TODO (109): Declare an integer instance constant called HEIGHT that is initialize to 60
-    
+    private final int HEIGHT = 60;
     
     //TODO (110): Declare a String instance variable called upKey
-    
+    String upKey;
     
     //TODO (111): Declare a String instance variable called downKey
-    
+    String downKey;
     
     
     /**
@@ -50,7 +50,25 @@ public class Paddle extends Actor
      * TODO (123): Set the image of the Paddle class to paddleImage
      */
     
-    
+    public Paddle(boolean isLeft)
+    {
+        GreenfootImage paddleImage = new GreenfootImage(WIDTH,HEIGHT);
+        if(isLeft == true)
+        {
+            upKey = "w";
+            downKey = "s";
+            paddleImage.setColor(Color.BLUE);
+        }
+        else
+        {
+            upKey = "up";
+            downKey = "down";
+            paddleImage.setColor(Color.RED);
+            
+        }
+        paddleImage.fillRect(0,0,WIDTH,HEIGHT);
+        setImage(paddleImage);
+    }
     /**
      * Act - do whatever the Paddle wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -59,7 +77,7 @@ public class Paddle extends Actor
     {
         // Add your action code here.
         //TODO (131): Use a method to check if the player has pressed keyboard keys
-        
+        checkKeyPress();
     }    
     
     /**
@@ -74,5 +92,15 @@ public class Paddle extends Actor
      * 
      *      TODO (130): Set the location to be the current X location and 4 pixels more than the current Y location
      */
-    
+    private void checkKeyPress()
+    {
+        if(Greenfoot.isKeyDown(upKey) == true)
+        {
+          setLocation(getX(),getY()-4);          
+        }
+        if(Greenfoot.isKeyDown(downKey) == true)
+        {
+            setLocation(getX(),getY()+4);
+        }
+    }
 }
